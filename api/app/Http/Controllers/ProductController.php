@@ -12,7 +12,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('is_active', true)->paginate(10);
+        $products = Product::where('is_active', true)->paginate(12);
+
         return response()->json($products);
     }
 
@@ -27,9 +28,11 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+
+        return response()->json($product);
     }
 
     /**
