@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../services/api";
+import { useCart } from "../contexts/CartContext";
 
 function ProductDetails() {
   const { slug } = useParams();
+  const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -53,7 +55,7 @@ function ProductDetails() {
       </Link>
 
       <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-        <div className="md:w-1/2 bg-gray-100 min-h-[400px] flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
+        <div className="md:w-1/2 bg-gray-100 min-h-100 flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
           Espaço para Foto do Produto
         </div>
 
@@ -76,11 +78,20 @@ function ProductDetails() {
           </div>
 
           <div className="mb-8">
-            <h3 className="text-lg font-semibold text-gray-800 mb-2">Descrição</h3>
-            <p className="text-gray-600 leading-relaxed">{product.description}</p>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Descrição
+            </h3>
+            <p className="text-gray-600 leading-relaxed">
+              {product.description}
+            </p>
           </div>
 
-          <button className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-md transition-colors text-lg">Adicionar ao Carrinho</button>
+          <button
+            onClick={() => addToCart(product)}
+            className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-md transition-colors text-lg cursor-pointer"
+          >
+            Adicionar ao Carrinho
+          </button>
         </div>
       </div>
     </div>
