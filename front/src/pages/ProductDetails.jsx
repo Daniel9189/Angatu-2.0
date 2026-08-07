@@ -7,7 +7,7 @@ function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  (useEffect(() => {
+  useEffect(() => {
     api
       .get(`/products/${slug}`)
       .then((response) => {
@@ -18,8 +18,7 @@ function ProductDetails() {
         console.error("Erro ao buscar produto:", error);
         setLoading(false);
       });
-  }),
-    [slug]);
+  }, [slug]);
 
   if (loading) {
     return (
@@ -53,19 +52,35 @@ function ProductDetails() {
         &larr; Voltar para a vitrine
       </Link>
 
-      <div>
-        <div>
-            Espaço para Foto do Produto
+      <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
+        <div className="md:w-1/2 bg-gray-100 min-h-[400px] flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
+          Espaço para Foto do Produto
         </div>
 
-        <div>
-            <h1>{product.name}</h1>
+        <div className="md:w-1/2 p-8 flex flex-col">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            {product.name}
+          </h1>
 
-            <div>
-                <span>
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price / 100)}
-                </span>
-            </div>
+          <div className="mb-6">
+            <span className="text-4xl font-extrabold text-blue-600">
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(product.price / 100)}
+            </span>
+          </div>
+
+          <div className="bg-green-50 text-green-700 px-4 py-2 rounded-md mb-8 inline-block w-max font-semibold">
+            Em estoque: {product.stock} unidades
+          </div>
+
+          <div className="mb-8">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Descrição</h3>
+            <p className="text-gray-600 leading-relaxed">{product.description}</p>
+          </div>
+
+          <button className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg shadow-md transition-colors text-lg">Adicionar ao Carrinho</button>
         </div>
       </div>
     </div>

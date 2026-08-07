@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import api from "./services/api";
+import { Link } from "react-router-dom";
+import api from "../services/api";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -37,7 +38,8 @@ function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <div
+          <Link
+            to={`/produto/${product.slug}`}
             key={product.id}
             className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-5 flex flex-col"
           >
@@ -61,7 +63,7 @@ function Home() {
                 Estoque: {product.stock}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
