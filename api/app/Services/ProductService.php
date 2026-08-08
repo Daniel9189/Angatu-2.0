@@ -9,7 +9,6 @@ class ProductService
 {
     public function createProduct(array $data)
     {
-        $data['user_id'] =
 
         $data['slug'] = Str::slug($data['name']);
 
