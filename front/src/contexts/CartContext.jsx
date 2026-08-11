@@ -1,10 +1,25 @@
 /* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    try {
+      const savedCart = localStorage.getItem("angatu_cart");
+      if (savedCart) {
+        return JSON.parse(savedCart);
+      }
+    } catch (error) {
+      console.error("Dados dos carrinho corrompidos. Resetando...", error);
+      localStorage.removeItem("angatu_cart");
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("angatu_cart", JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (product) => {
     setCart((carrinhoAtual) => {
