@@ -26,7 +26,7 @@ class StoreProductRequest extends FormRequest
             'user_id' => ['required', 'exists:users,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
-            'price' => ['required', 'integer', 'min:0'],
+            'price' => ['required', 'integer','min:0'],
             'stock' => ['required', 'integer', 'min:0'],
             'is_active' => ['boolean'],
         ];
