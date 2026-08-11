@@ -11,7 +11,7 @@ function Header() {
       <div className="container mx-auto p-4 flex justify-between items-center">
         <Link
           to="/"
-          className="text-2xl font-bold tracking-tight hover:text-blue-100 transition-colors"
+          className="text-2xl font-bold tracking-tight hover:text-blue-100 transition-colors focus:outline-none"
         >
           Angatu
         </Link>
