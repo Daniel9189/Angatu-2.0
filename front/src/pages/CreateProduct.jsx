@@ -99,6 +99,7 @@ export default function CreateProduct() {
               value={formData.price}
               onChange={handleInputChange}
               required
+              min={0}
               className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
             />
           </div>
@@ -112,6 +113,7 @@ export default function CreateProduct() {
               value={formData.stock}
               onChange={handleInputChange}
               required
+              min={0}
               className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
             />
           </div>
