@@ -34,7 +34,7 @@ class OrderService
 
             $order = Order::create([
                 'user_id' => $userId,
-                'totalAmount' => $totalAmount,
+                'total_amount' => $totalAmount,
                 'status' => 'completed',
             ]);
 
