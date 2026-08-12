@@ -1,12 +1,53 @@
+import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, clearCart } = useCart();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const valorTotal = cart.reduce((total, item) => {
     return total + item.price * item.quantidade;
   }, 0);
+
+  const handleCheckout = async () => {
+    setLoading(true);
+
+    const payload = {
+      user_id: 3,
+      items: cart.map((item) => ({
+        product_id: item.id,
+        quantity: item.quantidade,
+      })),
+    };
+
+    try {
+      const response = await fetch("http://localhost:8000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Pedido realizado com sucesso! O estoque foi atualizado.");
+        clearCart();
+        navigate("/");
+      } else {
+        const errorData = await response.json();
+
+        alert(`Não foi possível finalizar: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error("Erro de conexão: ", error);
+      alert("Erro ao conectar com o servidor para finalizar a compra.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (cart.length === 0) {
     return (
@@ -60,14 +101,26 @@ function Cart() {
         ))}
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-lg shadow-inner flex justify-between items-center">
-        <span className="text-xl font-bold text-gray-700">Total a pagar:</span>
-        <span className="text-3xl font-extrabold text-green-600">
-          {new Intl.NumberFormat("pt-BR", {
-            style: "currency",
-            currency: "BRL",
-          }).format(valorTotal / 100)}
-        </span>
+      <div className="bg-gray-50 p-6 rounded-lg shadow-inner flex flex-col md:flex-row justify-between items-center gap-6">
+        <div>
+          <span className="text-xl font-bold text-gray-700 mr-3">
+            Total a pagar:
+          </span>
+          <span className="text-3xl font-extrabold text-green-600 block md:inline mt-2 md:mt-0">
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(valorTotal / 100)}
+          </span>
+        </div>
+
+        <button
+          onClick={handleCheckout}
+          disabled={loading}
+          className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-colors disabled:bg-gray-400 cursor-pointer shadow-md text-lg"
+        >
+          {loading ? "Processando Pedido..." : "Finalizar Compra"}
+        </button>
       </div>
     </div>
   );
