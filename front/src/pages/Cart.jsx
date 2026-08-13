@@ -53,7 +53,7 @@ function Cart() {
     return (
       <div className="container mx-auto p-8 text-center mt-12">
         <h2 className="text-2xl font-bold text-gray-700 mb-4">
-          Seu carrinho está vazio{" "}
+          Seu carrinho está vazio
         </h2>
         <Link
           to="/"
