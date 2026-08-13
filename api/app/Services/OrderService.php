@@ -12,19 +12,26 @@ class OrderService
 {
     public function createOrder(int $userId, array $items)
     {
+        //inicia uma transação
         return DB::transaction(function () use ($userId, $items) {
+            //define os valores iniciais das variáveis
             $totalAmount = 0;
             $processedItems = [];
 
+            //passa por cada produto
             foreach ($items as $item) {
+                //acha o produto no banco pelo id passado
                 $product = Product::findOrFail($item['product_id']);
 
+                //confere o estoque
                 if ($product->stock < $item['quantity']) {
                     throw new Exception("Estoque insuficiente para o produto: {$product->name}");
                 }
 
+                //calcula o valor total do pedido
                 $totalAmount += ($product->price * $item['quantity']);
 
+                //dados utilizados para criar o OrderItem
                 $processedItems[] = [
                     'product' => $product,
                     'quantity' => $item['quantity'],
@@ -32,12 +39,14 @@ class OrderService
                 ];
             }
 
+            //salva o pedido na tabela Orders
             $order = Order::create([
                 'user_id' => $userId,
                 'total_amount' => $totalAmount,
                 'status' => 'completed',
             ]);
 
+            //salva os itens do pedido no na tabela OrderItems
             foreach ($processedItems as $processedItem) {
                 OrderItem::create([
                     'order_id' => $order->id,
@@ -46,6 +55,7 @@ class OrderService
                     'price' => $processedItem['price'],
                 ]);
 
+                //reduz o estoque de acordo com a quantidade de produtos comprados
                 $processedItem['product']->decrement('stock', $processedItem['quantity']);
             }
 
