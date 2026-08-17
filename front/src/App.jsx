@@ -4,6 +4,7 @@ import ProductDetails from "./pages/ProductDetails";
 import Header from "./components/Header";
 import Cart from "./pages/Cart";
 import CreateProduct from "./pages/CreateProduct";
+import Login from "./components/Login";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/produto/:slug" element={<ProductDetails />} />
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/cadastrar-produto" element={<CreateProduct />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </>
   );

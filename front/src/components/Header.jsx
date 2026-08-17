@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 
 function Header() {
   const { cart } = useCart();
+
+  const { user, isAuthenticated, logout } = useAuth();
 
   const totalItems = cart.reduce((total, item) => total + item.quantidade, 0);
 
@@ -31,6 +34,26 @@ function Header() {
               </span>
             </div>
           </Link>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-4">
+              <span className="text-white font-medium hidden sm:block">
+                Olá, {user.name}
+              </span>
+              <button
+                onClick={logout}
+                className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm cursor-pointer"
+              >
+                Sair
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="bg-white text-blue-600 hover:bg-gray-100 px-4 py-2 rounded-lg font-bold transition-colors shadow-sm"
+            >
+              Entrar / Cadastrar
+            </Link>
+          )}
         </div>
       </div>
     </header>
