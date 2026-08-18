@@ -11,11 +11,14 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request, OrderService $orderService)
     {
         try {
-            $validatedData = $request->validated();
+
+            $userId = $request->user()->id;
+
+            $items = $request->validated('items');
 
             $order = $orderService->createOrder(
-                $validatedData['user_id'],
-                $validatedData['items']
+                $userId,
+                $items
             );
 
             return response()->json($order, 201);

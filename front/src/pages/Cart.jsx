@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 
 function Cart() {
   const { cart, removeFromCart, clearCart } = useCart();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { token } = useAuth();
 
   const valorTotal = cart.reduce((total, item) => {
     return total + item.price * item.quantidade;
@@ -15,7 +17,6 @@ function Cart() {
     setLoading(true);
 
     const payload = {
-      user_id: 3,
       items: cart.map((item) => ({
         product_id: item.id,
         quantity: item.quantidade,
@@ -28,6 +29,7 @@ function Cart() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(payload),
       });

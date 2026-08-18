@@ -7,9 +7,11 @@ use Illuminate\Support\Str;
 
 class ProductService
 {
-    public function createProduct(array $data)
+    public function createProduct(string $userId, array $data)
     {
 
+        $data['user_id'] = $userId;
+    
         $data['slug'] = Str::slug($data['name']);
 
         $data['is_active'] = $data['is_active'] ?? true;

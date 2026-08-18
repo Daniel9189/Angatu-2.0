@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function CreateProduct() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function CreateProduct() {
     price: "",
     stock: "",
   });
+  const { token } = useAuth();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +23,6 @@ export default function CreateProduct() {
     setLoading(true);
 
     const payload = {
-      user_id: 3,
       name: formData.name,
       description: formData.description,
       price: Math.round(parseFloat(formData.price) * 100),
@@ -35,6 +36,7 @@ export default function CreateProduct() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: `bearer ${token}`
         },
         body: JSON.stringify(payload),
       });

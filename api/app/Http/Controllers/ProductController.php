@@ -24,9 +24,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request, ProductService $productService)
     {
+        $userId = $request->user()->id;
+
         $validatedData = $request->validated();
 
-        $product = $productService->createProduct($validatedData);
+        $product = $productService->createProduct($userId, $validatedData);
         
         return response()->json($product, 201);
     }
