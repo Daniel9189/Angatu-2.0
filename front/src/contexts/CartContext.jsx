@@ -1,9 +1,13 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const CartContext = createContext();
 
 export function CartProvider({ children }) {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [cart, setCart] = useState(() => {
     try {
       const savedCart = localStorage.getItem("angatu_cart");
@@ -22,6 +26,10 @@ export function CartProvider({ children }) {
   }, [cart]);
 
   const addToCart = (product) => {
+    if (!isAuthenticated) {
+      return navigate("/login");
+    }
+
     setCart((carrinhoAtual) => {
       const produtoExiste = carrinhoAtual.find(
         (item) => item.id === product.id,
@@ -47,10 +55,12 @@ export function CartProvider({ children }) {
 
   const clearCart = () => {
     setCart([]);
-  }
+  };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, clearCart }}
+    >
       {children}
     </CartContext.Provider>
   );

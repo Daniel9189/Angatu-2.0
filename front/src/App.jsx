@@ -4,8 +4,9 @@ import ProductDetails from "./pages/ProductDetails";
 import Header from "./components/Header";
 import Cart from "./pages/Cart";
 import CreateProduct from "./pages/CreateProduct";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Orders from "./pages/Orders";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -14,10 +15,31 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/produto/:slug" element={<ProductDetails />} />
-        <Route path="/carrinho" element={<Cart />} />
-        <Route path="/cadastrar-produto" element={<CreateProduct />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/pedidos" element={<Orders />} />
+        <Route
+          path="/carrinho"
+          element={
+            <PrivateRoute>
+              <Cart />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cadastrar-produto"
+          element={
+            <PrivateRoute>
+              <CreateProduct />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/pedidos"
+          element={
+            <PrivateRoute>
+              <Orders />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </>
   );
