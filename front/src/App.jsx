@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Cart from "./pages/Cart";
 import CreateProduct from "./pages/CreateProduct";
 import Login from "./components/Login";
+import Orders from "./pages/Orders";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/carrinho" element={<Cart />} />
         <Route path="/cadastrar-produto" element={<CreateProduct />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/pedidos" element={<Orders />} />
       </Routes>
     </>
   );

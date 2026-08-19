@@ -26,6 +26,12 @@ function Header() {
           >
             + Vender Produto
           </Link>
+          <Link
+            to="/pedidos"
+            className="text-white hover:text-blue-200 font-semibold transition-colors"
+          >
+            Meus Pedidos
+          </Link>
           <Link to="/carrinho">
             <div className="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-lg">
               <span className="font-semibold hidden sm:block">Carrinho</span>
