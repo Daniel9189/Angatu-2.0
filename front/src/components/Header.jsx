@@ -22,7 +22,7 @@ function Header() {
         <div className="flex items-center gap-6 md:gap-6">
           <Link
             to="/cadastrar-produto"
-            className="text-sm md:text-base font-semibold bg-white/10 hover:bg-white/20 border border-white/30 px-4 py-2 rounded-lg transition-all"
+            className="text-white hover:text-blue-200 font-semibold transition-colors"
           >
             + Vender Produto
           </Link>
@@ -41,13 +41,13 @@ function Header() {
             </div>
           </Link>
           {isAuthenticated ? (
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <span className="text-white font-medium hidden sm:block">
                 Olá, {user.name}
               </span>
               <button
                 onClick={logout}
-                className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-lg font-semibold transition-colors shadow-sm cursor-pointer"
+                className=" text-red-500 hover:text-red-600 px-4 py-2 font-semibold transition-colors cursor-pointer"
               >
                 Sair
               </button>
