@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { toast } from "react-toastify";
 
 export default function CreateProduct() {
   const navigate = useNavigate();
@@ -36,22 +37,22 @@ export default function CreateProduct() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: `bearer ${token}`
+          Authorization: `bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        alert("Produto cadastrado com sucesso!");
+        toast.success("Produto cadastrado com sucesso!");
         navigate("/");
       } else {
         const errorData = await response.json();
         console.error("Erro na validação:", errorData);
-        alert("Erro ao cadastrar. Verifique o console.");
+        toast.error("Erro ao cadastrar. Verifique o console.");
       }
     } catch (error) {
       console.error("Erro de conexão:", error);
-      alert("Erro ao conectar com o servidor.");
+      toast.error("Erro ao conectar com o servidor.");
     } finally {
       setLoading(false);
     }

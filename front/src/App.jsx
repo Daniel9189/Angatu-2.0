@@ -7,11 +7,19 @@ import CreateProduct from "./pages/CreateProduct";
 import Login from "./pages/Login";
 import Orders from "./pages/Orders";
 import PrivateRoute from "./components/PrivateRoute";
+import { ToastContainer, Zoom } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
       <Header />
+      <ToastContainer
+        position="bottom-center"
+        theme="light"
+        autoClose={3000}
+        transition={Zoom}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/produto/:slug" element={<ProductDetails />} />

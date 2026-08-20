@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 
@@ -27,6 +28,7 @@ export function CartProvider({ children }) {
 
   const addToCart = (product) => {
     if (!isAuthenticated) {
+      toast.error("Faça login para adicionar um produto ao carrinho!");
       return navigate("/login");
     }
 
@@ -45,12 +47,15 @@ export function CartProvider({ children }) {
 
       return [...carrinhoAtual, { ...product, quantidade: 1 }];
     });
+
+    toast.success(`${product.name} adicionado ao carrinho!`);
   };
 
   const removeFromCart = (productId) => {
     setCart((carrinhoAtual) => {
       return carrinhoAtual.filter((item) => item.id != productId);
     });
+    toast.success("Produto removido com sucesso!");
   };
 
   const clearCart = () => {

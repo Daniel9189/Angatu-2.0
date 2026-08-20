@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function Cart() {
   const { cart, removeFromCart, clearCart } = useCart();
@@ -29,19 +30,20 @@ function Cart() {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        alert("Pedido realizado com sucesso! O estoque foi atualizado.");
+        toast.success(
+          "Pedido realizado com sucesso! O estoque foi atualizado.",
+        );
         clearCart();
         navigate("/");
       } else {
         const errorData = await response.json();
-
-        alert(`Não foi possível finalizar: ${errorData.message}`);
+        toast.error(`Não foi possível finalizar: ${errorData.message}`);
       }
     } catch (error) {
       console.error("Erro de conexão: ", error);
