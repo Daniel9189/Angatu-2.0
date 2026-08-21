@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+.sem-setas::-webkit-outer-spin-button,
+.sem-setas::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
