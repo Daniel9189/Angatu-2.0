@@ -1,11 +1,39 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import api from "../services/api";
 
 function Home() {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [searchParams] = useSearchParams();
+
+  const query = searchParams.get("q");
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const url = query
+          ? `http://localhost:8000/api/products/search?q=${query}`
+          : `http://localhost:8000/api/products`;
+
+        const response = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+          },
+        });
+
+        if (!response.ok) throw new Error("Falha ao carregar");
+
+        const data = await response.json();
+        const productList = Array.isArray(data) ? data : data.data || [];
+        setProducts(productList);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchProducts();
+  }, [query]);
 
   useEffect(() => {
     api

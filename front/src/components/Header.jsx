@@ -1,13 +1,24 @@
-import { Link } from "react-router-dom";
-import { useCart } from "../contexts/CartContext";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
 
 function Header() {
   const { cart } = useCart();
-
   const { user, isAuthenticated, logout } = useAuth();
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
   const totalItems = cart.reduce((total, item) => total + item.quantidade, 0);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+
+    if (searchTerm.trim() !== "") {
+      navigate(`/?q=${searchTerm}`);
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <header className="bg-blue-600 text-white shadow-md">
@@ -18,6 +29,25 @@ function Header() {
         >
           Angatu
         </Link>
+
+        <form
+          onSubmit={handleSearch}
+          className="flex flex-1 max-w-2xl mx-4 sm:mx-8 shadow-sm"
+        >
+          <input
+            type="text"
+            placeholder="Busque por produtos, marcas ou modelos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 text-gray-800 bg-white border-none rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+          <button
+            type="submit"
+            className="px-6 py-2 font-bold text-blue-900 bg-yellow-400 rounded-r-md hover:bg-yellow-500 transition-colors cursor-pointer"
+          >
+            Buscar
+          </button>
+        </form>
 
         <div className="flex items-center gap-6 md:gap-6">
           <Link

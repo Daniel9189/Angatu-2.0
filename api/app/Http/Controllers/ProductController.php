@@ -29,7 +29,7 @@ class ProductController extends Controller
         $validatedData = $request->validated();
 
         $product = $productService->createProduct($userId, $validatedData);
-        
+
         return response()->json($product, 201);
     }
 
@@ -57,5 +57,18 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function search(Request $request) 
+    {
+        $termo = $request->input('q');
+
+        if (!$termo) {
+            return response()->json([]);
+        }
+
+        $products = Product::search($termo)->get();
+
+        return response()->json($products);
     }
 }
