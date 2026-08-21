@@ -123,7 +123,7 @@ function Cart() {
           disabled={loading}
           className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-colors disabled:bg-gray-400 cursor-pointer shadow-md text-lg"
         >
-          {loading ? "Processando Pedido..." : "Finalizar Compra"}
+          {loading ? "Processando Pedido..." : "Continuar"}
         </button>
       </div>
     </div>
