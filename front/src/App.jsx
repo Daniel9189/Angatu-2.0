@@ -9,6 +9,7 @@ import Orders from "./pages/Orders";
 import PrivateRoute from "./components/PrivateRoute";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Checkout from "./pages/Checkout";
 
 function App() {
   return (
@@ -24,6 +25,14 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/produto/:slug" element={<ProductDetails />} />
         <Route path="/login" element={<Login />} />
+        <Route
+          path="checkout"
+          element={
+            <PrivateRoute>
+              <Checkout />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/carrinho"
           element={

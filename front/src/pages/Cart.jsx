@@ -1,57 +1,54 @@
 import { useState } from "react";
-import { useCart } from "../contexts/CartContext";
-import { useAuth } from "../contexts/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useCart } from "../contexts/CartContext";
 
 function Cart() {
-  const { cart, removeFromCart, clearCart } = useCart();
-  const [loading, setLoading] = useState(false);
+  const { cart, removeFromCart } = useCart();
+  const [loading] = useState(false);
   const navigate = useNavigate();
-  const { token } = useAuth();
 
   const valorTotal = cart.reduce((total, item) => {
     return total + item.price * item.quantidade;
   }, 0);
 
-  const handleCheckout = async () => {
-    setLoading(true);
+  // const handleCheckout = async () => {
+  //   setLoading(true);
 
-    const payload = {
-      items: cart.map((item) => ({
-        product_id: item.id,
-        quantity: item.quantidade,
-      })),
-    };
+  //   const payload = {
+  //     items: cart.map((item) => ({
+  //       product_id: item.id,
+  //       quantity: item.quantidade,
+  //     })),
+  //   };
 
-    try {
-      const response = await fetch("http://localhost:8000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(payload),
-      });
+  //   try {
+  //     const response = await fetch("http://localhost:8000/api/orders", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Accept: "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       body: JSON.stringify(payload),
+  //     });
 
-      if (response.ok) {
-        toast.success(
-          "Pedido realizado com sucesso! O estoque foi atualizado.",
-        );
-        clearCart();
-        navigate("/");
-      } else {
-        const errorData = await response.json();
-        toast.error(`Não foi possível finalizar: ${errorData.message}`);
-      }
-    } catch (error) {
-      console.error("Erro de conexão: ", error);
-      alert("Erro ao conectar com o servidor para finalizar a compra.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  //     if (response.ok) {
+  //       toast.success(
+  //         "Pedido realizado com sucesso! O estoque foi atualizado.",
+  //       );
+  //       clearCart();
+  //       navigate("/");
+  //     } else {
+  //       const errorData = await response.json();
+  //       toast.error(`Não foi possível finalizar: ${errorData.message}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Erro de conexão: ", error);
+  //     alert("Erro ao conectar com o servidor para finalizar a compra.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   if (cart.length === 0) {
     return (
@@ -119,7 +116,7 @@ function Cart() {
         </div>
 
         <button
-          onClick={handleCheckout}
+          onClick={() => navigate("/checkout")}
           disabled={loading}
           className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg transition-colors disabled:bg-gray-400 cursor-pointer shadow-md text-lg"
         >
