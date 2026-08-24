@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
-// import { useCart } from "../contexts/CartContext";
-// import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Checkout() {
   const navigate = useNavigate();
-  // const { clearCart } = useCart();
-  // const { token } = useAuth();
+  const { cart, clearCart } = useCart();
+  const { token } = useAuth();
 
   const [address, setAddress] = useState({
     rua: "",
@@ -20,8 +20,39 @@ export default function Checkout() {
 
   const handleCheckout = async (e) => {
     e.preventDefault();
-    toast.success("Disseram que o pedido foi registrado");
-    navigate("/pedidos");
+
+    if (cart.length === 0) {
+      toast.error("O seu carrinho está vazio");
+      return;
+    }
+
+    try {
+      const orderPayload = {
+        endereco: address,
+        pagamento: paymentMethod,
+        itens: cart,
+      };
+
+      const response = await fetch("http://localhost:8000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderPayload),
+      });
+
+      if (!response.ok) throw new Error("Falha ao processar o pedido");
+
+      toast.success("Pedido finalizado com sucesso!");
+      clearCart();
+      navigate("/pedidos");
+
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao finalizar a compra. Tente novamente.");
+    }
   };
 
   return (
