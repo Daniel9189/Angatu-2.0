@@ -8,7 +8,7 @@ function Header() {
   const { user, isAuthenticated, logout } = useAuth();
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
-  const totalItems = cart.reduce((total, item) => total + item.quantidade, 0);
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
   const location = useLocation();
 
   const handleSearch = async (e) => {

@@ -40,12 +40,12 @@ export function CartProvider({ children }) {
       if (produtoExiste) {
         return carrinhoAtual.map((item) =>
           item.id === product.id
-            ? { ...item, quantidade: item.quantidade + 1 }
+            ? { ...item, quantity: item.quantity + 1 }
             : item,
         );
       }
 
-      return [...carrinhoAtual, { ...product, quantidade: 1 }];
+      return [...carrinhoAtual, { ...product, quantity: 1 }];
     });
 
     toast.success(`${product.name} adicionado ao carrinho!`);

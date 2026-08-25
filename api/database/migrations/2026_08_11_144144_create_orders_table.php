@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('user_id')->constrained()->onDelete('restrict');
 
             $table->integer('total_amount');
-            $table->string('status')->default('completed');
+            $table->string('payment_method');
+            $table->json('shipping_address');
+            $table->string('status')->default('pendente');
 
             $table->timestamps();
         });

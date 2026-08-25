@@ -8,47 +8,8 @@ function Cart() {
   const navigate = useNavigate();
 
   const valorTotal = cart.reduce((total, item) => {
-    return total + item.price * item.quantidade;
+    return total + item.price * item.quantity;
   }, 0);
-
-  // const handleCheckout = async () => {
-  //   setLoading(true);
-
-  //   const payload = {
-  //     items: cart.map((item) => ({
-  //       product_id: item.id,
-  //       quantity: item.quantidade,
-  //     })),
-  //   };
-
-  //   try {
-  //     const response = await fetch("http://localhost:8000/api/orders", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Accept: "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(payload),
-  //     });
-
-  //     if (response.ok) {
-  //       toast.success(
-  //         "Pedido realizado com sucesso! O estoque foi atualizado.",
-  //       );
-  //       clearCart();
-  //       navigate("/");
-  //     } else {
-  //       const errorData = await response.json();
-  //       toast.error(`Não foi possível finalizar: ${errorData.message}`);
-  //     }
-  //   } catch (error) {
-  //     console.error("Erro de conexão: ", error);
-  //     alert("Erro ao conectar com o servidor para finalizar a compra.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   if (cart.length === 0) {
     return (
@@ -80,7 +41,7 @@ function Cart() {
               <h3 className="text-lg font-semibold text-gray-800">
                 {item.name}
               </h3>
-              <p className="text-gray-500">Quantidade: {item.quantidade}</p>
+              <p className="text-gray-500">Quantidade: {item.quantity}</p>
             </div>
 
             <div className="flex items-center gap-6">
@@ -88,7 +49,7 @@ function Cart() {
                 {new Intl.NumberFormat("pt-BR", {
                   style: "currency",
                   currency: "BRL",
-                }).format((item.price * item.quantidade) / 100)}
+                }).format((item.price * item.quantity) / 100)}
               </span>
 
               <button

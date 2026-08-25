@@ -22,10 +22,15 @@ class StoreOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => ['required', 'exists:products,id'],
-            'items.*.quantity' => ['required', 'integer', 'min:1']
+            'endereco' => ['required', 'array'],
+            'endereco.cep' => ['required', 'string'],
+            'endereco.rua' => ['required', 'string'], 
+            'endereco.numero' => ['required', 'string'],
+            'endereco.cidade' => ['required', 'string'],
+            'pagamento' => ['required', 'string', 'in:pix,cartao,boleto'],
+            'itens' => ['required', 'array', 'min:1'],
+            'itens.*.id' => ['required', 'exists:products,id'],
+            'itens.*.quantity' => ['required', 'integer', 'min:1']
         ];
     }
 }

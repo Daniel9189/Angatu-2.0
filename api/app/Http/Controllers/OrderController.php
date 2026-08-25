@@ -19,23 +19,24 @@ class OrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-            return response()->json($orders);
+        return response()->json($orders);
     }
 
     public function store(StoreOrderRequest $request, OrderService $orderService)
     {
         try {
 
-            $userId = $request->user()->id;
-
-            $items = $request->validated('items');
-
             $order = $orderService->createOrder(
-                $userId,
-                $items
+                $request->user()->id,
+                $request->validated('endereco'),
+                $request->validated('pagamento'),
+                $request->validated('itens')
             );
 
-            return response()->json($order, 201);
+            return response()->json([
+                'message' => 'Pedido criado com sucesso!',
+                'order' => $order
+            ], 201);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
