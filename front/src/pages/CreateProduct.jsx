@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { toast } from "react-toastify";
@@ -6,7 +6,9 @@ import { toast } from "react-toastify";
 export default function CreateProduct() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [images, setImages] = useState([]);
+  const fileInputRef = useRef(null);
+  const [data, setData] = useState({
     name: "",
     description: "",
     price: "",
@@ -16,30 +18,56 @@ export default function CreateProduct() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setData({ ...data, [name]: value });
+  };
+
+  const handleImageChange = (e) => {
+    const selectedFiles = Array.from(e.target.files);
+
+    if (selectedFiles.length > 0) {
+      const newImages = selectedFiles.map((file) => ({
+        file: file,
+        url: URL.createObjectURL(file),
+      }));
+
+      setImages((prevImages) => [...prevImages, ...newImages]);
+    }
+
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleRemoveImage = (indexToRemove) => {
+    setImages((prevImages) =>
+      prevImages.filter((_, index) => index !== indexToRemove),
+    );
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const payload = {
-      name: formData.name,
-      description: formData.description,
-      price: Math.round(parseFloat(formData.price) * 100),
-      stock: parseInt(formData.stock),
-      is_active: true,
-    };
+    const formData = new FormData();
+
+    formData.append("name", data.name);
+    formData.append("description", data.description);
+    formData.append("price", Math.round(parseFloat(data.price) * 100));
+    formData.append("stock", parseInt(data.stock));
+    formData.append("is_active", true);
+
+    if (images) {
+      formData.append("image", images);
+    }
 
     try {
       const response = await fetch("http://localhost:8000/api/products", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           Accept: "application/json",
           Authorization: `bearer ${token}`,
         },
-        body: JSON.stringify(payload),
+        body: formData,
       });
 
       if (response.ok) {
@@ -72,7 +100,7 @@ export default function CreateProduct() {
           <input
             type="text"
             name="name"
-            value={formData.name}
+            value={data.name}
             onChange={handleInputChange}
             required
             className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
@@ -85,7 +113,7 @@ export default function CreateProduct() {
           </label>
           <textarea
             name="description"
-            value={formData.description}
+            value={data.description}
             onChange={handleInputChange}
             rows={3}
             className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
@@ -99,7 +127,7 @@ export default function CreateProduct() {
               type="number"
               name="price"
               step={0.01}
-              value={formData.price}
+              value={data.price}
               onChange={handleInputChange}
               required
               min={0}
@@ -113,13 +141,62 @@ export default function CreateProduct() {
             <input
               type="number"
               name="stock"
-              value={formData.stock}
+              value={data.stock}
               onChange={handleInputChange}
               required
               min={0}
               className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
             />
           </div>
+        </div>
+
+        <div className="mb-6 mt-4">
+          <label className="font-semibold text-gray-700">
+            Imagens do Produto
+          </label>
+
+          <input
+            type="file"
+            multiple
+            accept="image/png, image/jpg, image/webp"
+            onChange={handleImageChange}
+            ref={fileInputRef}
+            className="w-full border border-gray-300 rounded-md p-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer file:cursor-pointer"
+          />
+
+          {images.length > 0 && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              {images.map((img, index) => (
+                <div
+                  key={index}
+                  className="relative border border-gray-300 rounded-md p-2 bg-gray-50 flex flex-col items-center shadow-sm"
+                >
+                  <img
+                    src={img.url}
+                    alt={`Preview ${index}`}
+                    className="h-24 w-full object-cover rounded-md mb-2 border border-gray-200"
+                  />
+
+                  <div className="text-xs text-gray-700 w-full truncate text-center mb-2" title={img.file.name}>
+                    <p>
+                      {img.file.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {(img.file.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="text-red-600 hover:text-red-800 text-sm font-bold px-3 py-2 bg-red-50 hover:bg-red-100 rounded-md transition-colors cursor-pointer"
+                  >
+                    Remover
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <button
