@@ -167,7 +167,7 @@ export default function CreateProduct() {
 
           <label
             htmlFor="image-upload"
-            className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 rounded-md p-6 hover:border-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
+            className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 rounded-md p-6 hover:border-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors mt-1"
           >
             <span className="text-sm font-semibold text-blue-700 bg-blue-100 px-4 py-2 rounded-md mb-2">
               {images.length === 0
