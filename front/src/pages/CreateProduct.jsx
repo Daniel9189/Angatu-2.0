@@ -157,12 +157,27 @@ export default function CreateProduct() {
 
           <input
             type="file"
+            id="image-upload"
             multiple
             accept="image/png, image/jpg, image/webp"
             onChange={handleImageChange}
             ref={fileInputRef}
-            className="w-full border border-gray-300 rounded-md p-2 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer file:cursor-pointer"
+            className="hidden"
           />
+
+          <label
+            htmlFor="image-upload"
+            className="flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-400 rounded-md p-6 hover:border-gray-700 bg-gray-50 hover:bg-gray-100 cursor-pointer transition-colors"
+          >
+            <span className="text-sm font-semibold text-blue-700 bg-blue-100 px-4 py-2 rounded-md mb-2">
+              {images.length === 0
+                ? "Selecionar Imagens"
+                : "Adicionar mais imagens"}
+            </span>
+            <p className="text-xs text-gray-500">
+              Formatos suportados: PNG, JPG ou WEBPP
+            </p>
+          </label>
 
           {images.length > 0 && (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
@@ -177,10 +192,11 @@ export default function CreateProduct() {
                     className="h-24 w-full object-cover rounded-md mb-2 border border-gray-200"
                   />
 
-                  <div className="text-xs text-gray-700 w-full truncate text-center mb-2" title={img.file.name}>
-                    <p>
-                      {img.file.name}
-                    </p>
+                  <div
+                    className="text-xs text-gray-700 w-full truncate text-center mb-2"
+                    title={img.file.name}
+                  >
+                    <p>{img.file.name}</p>
                     <p className="text-xs text-gray-500">
                       {(img.file.size / 1024 / 1024).toFixed(2)} MB
                     </p>
