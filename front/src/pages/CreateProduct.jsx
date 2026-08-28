@@ -54,11 +54,11 @@ export default function CreateProduct() {
     formData.append("description", data.description);
     formData.append("price", Math.round(parseFloat(data.price) * 100));
     formData.append("stock", parseInt(data.stock));
-    formData.append("is_active", true);
+    formData.append("is_active", 1);
 
-    if (images) {
-      formData.append("image", images);
-    }
+    images.forEach((img) => {
+      formData.append("images[]", img.file);
+    });
 
     try {
       const response = await fetch("http://localhost:8000/api/products", {
@@ -72,6 +72,13 @@ export default function CreateProduct() {
 
       if (response.ok) {
         toast.success("Produto cadastrado com sucesso!");
+        setData({
+          name: "",
+          description: "",
+          price: "",
+          stock: "",
+        });
+        setImages([]);
         navigate("/");
       } else {
         const errorData = await response.json();
@@ -159,7 +166,7 @@ export default function CreateProduct() {
             type="file"
             id="image-upload"
             multiple
-            accept="image/png, image/jpg, image/webp"
+            accept="image/png, image/jpeg, image/webp"
             onChange={handleImageChange}
             ref={fileInputRef}
             className="hidden"

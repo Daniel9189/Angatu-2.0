@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Product;
 use App\Services\ProductService;
+use Exception;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -24,13 +25,23 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request, ProductService $productService)
     {
-        $userId = $request->user()->id;
+        try {
+            $userId = $request->user()->id;
 
-        $validatedData = $request->validated();
+            $data = $request->validated();
 
-        $product = $productService->createProduct($userId, $validatedData);
+            $images = $request->file('images');
 
-        return response()->json($product, 201);
+            $product = $productService->createProduct($userId, $data, $images);
+
+            return response()->json([
+                'message' => 'Produto criado com sucesso!', 
+                'product' => $product->load('images')
+            ], 201);
+            
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
     }
 
     /**
@@ -59,7 +70,7 @@ class ProductController extends Controller
         //
     }
 
-    public function search(Request $request) 
+    public function search(Request $request)
     {
         $termo = $request->input('q');
 
