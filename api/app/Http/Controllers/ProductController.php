@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::where('is_active', true)->paginate(12);
+        $products = Product::where('is_active', true)->with('images')->paginate(12);
 
         return response()->json($products);
     }
@@ -49,7 +49,7 @@ class ProductController extends Controller
      */
     public function show(string $slug)
     {
-        $product = Product::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $product = Product::where('slug', $slug)->where('is_active', true)->with('images')->firstOrFail();
 
         return response()->json($product);
     }

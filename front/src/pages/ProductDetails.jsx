@@ -8,6 +8,7 @@ function ProductDetails() {
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
+  const STORAGE_URL = "http://localhost:8000/storage/";
 
   useEffect(() => {
     api
@@ -56,6 +57,14 @@ function ProductDetails() {
 
       <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
         <div className="md:w-1/2 bg-gray-100 min-h-100 flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
+          <img
+            src={
+              product.images && product.images.length > 0
+                ? `${STORAGE_URL}${product.images[0].image_path}`
+                : "https://via.placeholder.com/400x300?text=Sem+Imagem"
+            }
+            alt={product.name}
+          />
         </div>
 
         <div className="md:w-1/2 p-8 flex flex-col">
