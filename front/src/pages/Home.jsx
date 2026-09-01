@@ -7,6 +7,7 @@ function Home() {
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [searchParams] = useSearchParams();
+  const STORAGE_URL = "http://localhost:8000/storage/";
 
   const query = searchParams.get("q");
 
@@ -71,9 +72,15 @@ function Home() {
             key={product.id}
             className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-5 flex flex-col"
           >
-            <div className="bg-gray-100 w-full h-48 rounded-md mb-4 flex items-center justify-center text-gray-400">
-              Sem Imagem
-            </div>
+            <img
+              src={
+                product.images && product.images.length > 0
+                  ? `${STORAGE_URL}${product.images[0].image_path}`
+                  : "https://placehold.co/400x300/ffd36c/3d8bff?text=Sem+Imagem"
+              }
+              alt={product.name}
+            />
+
             <h2 className="text-lg font-semibold text-gray-900 mb-2 truncate">
               {product.name}
             </h2>

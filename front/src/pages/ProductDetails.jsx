@@ -61,7 +61,7 @@ function ProductDetails() {
             src={
               product.images && product.images.length > 0
                 ? `${STORAGE_URL}${product.images[0].image_path}`
-                : "https://via.placeholder.com/400x300?text=Sem+Imagem"
+                : "https://placehold.co/750x450/ffd36c/3d8bff?text=Sem+Imagem"
             }
             alt={product.name}
           />

@@ -35,10 +35,9 @@ class ProductController extends Controller
             $product = $productService->createProduct($userId, $data, $images);
 
             return response()->json([
-                'message' => 'Produto criado com sucesso!', 
+                'message' => 'Produto criado com sucesso!',
                 'product' => $product->load('images')
             ], 201);
-            
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -78,7 +77,11 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::search($termo)->get();
+        $products = Product::search($termo)
+            ->query(function ($query) {
+                $query->with('images')->where('is_active', true);
+            })
+            ->get();
 
         return response()->json($products);
     }
