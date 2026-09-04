@@ -16,6 +16,26 @@ export default function CreateProduct() {
   });
   const { token } = useAuth();
 
+  const handlePriceChange = (e) => {
+    let value = e.target.value;
+
+    value = value.replace(/\D/g, "");
+
+    if (value === "") {
+      setData((prev) => ({ ...prev, price: "" }));
+      return;
+    }
+
+    const numericValue = parseInt(value, 10) / 100;
+
+    const formattedValue = new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(numericValue);
+
+    setData((prev) => ({ ...prev, price: formattedValue}))
+  }
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
@@ -52,7 +72,10 @@ export default function CreateProduct() {
 
     formData.append("name", data.name);
     formData.append("description", data.description);
-    formData.append("price", Math.round(parseFloat(data.price) * 100));
+
+    const priceInCents = parseInt(data.price.replace(/\D/g, ""), 10);
+
+    formData.append("price", priceInCents);
     formData.append("stock", parseInt(data.stock));
     formData.append("is_active", 1);
 
@@ -61,7 +84,7 @@ export default function CreateProduct() {
     });
 
     try {
-      const response = await fetch("http://localhost:8000/api/products", {
+      const response = await fetch("http://localhost:8001/api/products", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -129,15 +152,14 @@ export default function CreateProduct() {
 
         <div className="grid grid-cols-2 gap-4">
           <div className="flex flex-col gap-1">
-            <label className="font-semibold text-gray-700">Preço (R$)</label>
+            <label className="font-semibold text-gray-700">Preço</label>
             <input
-              type="number"
+              type="text"
               name="price"
-              step={0.01}
               value={data.price}
-              onChange={handleInputChange}
+              onChange={handlePriceChange}
               required
-              min={0}
+              placeholder="R$ 0,00"
               className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500"
             />
           </div>
