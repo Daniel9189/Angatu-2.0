@@ -56,7 +56,7 @@ function ProductDetails() {
       </Link>
 
       <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-        <div className="md:w-1/2 bg-gray-100 min-h-100 h-130 flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
+        <div className="md:w-1/2 bg-white min-h-100 h-130 flex items-center justify-center text-gray-400 text-xl font-medium border-b md:border-b-0 md:border-r border-gray-200">
           <img
             src={
               product.images && product.images.length > 0
@@ -64,6 +64,7 @@ function ProductDetails() {
                 : "https://placehold.co/750x450/ffd36c/3d8bff?text=Sem+Imagem"
             }
             alt={product.name}
+            className="w-full h-full object-contain"
           />
         </div>
 

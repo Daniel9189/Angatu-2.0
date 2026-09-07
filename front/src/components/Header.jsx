@@ -71,7 +71,7 @@ function Header() {
                 <div className="flex items-center gap-2 bg-blue-800 px-4 py-2 rounded-lg">
                   <span className="font-semibold hidden sm:block">Carrinho</span>
                   <span className="bg-white text-blue-800 rounded-full h-6 w-6 flex items-center justify-center font-bold text-sm">
-                    {totalItems}
+                    {totalItems || 0}
                   </span>
                 </div>
               </Link>

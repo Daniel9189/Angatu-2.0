@@ -84,7 +84,7 @@ export default function CreateProduct() {
     });
 
     try {
-      const response = await fetch("http://localhost:8001/api/products", {
+      const response = await fetch("http://localhost:8000/api/products", {
         method: "POST",
         headers: {
           Accept: "application/json",
