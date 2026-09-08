@@ -72,31 +72,36 @@ function Home() {
             key={product.id}
             className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300 p-5 flex flex-col"
           >
-            <img
-              src={
-                product.images && product.images.length > 0
-                  ? `${STORAGE_URL}${product.images[0].image_path}`
-                  : "https://placehold.co/400x300/ffd36c/3d8bff?text=Sem+Imagem"
-              }
-              alt={product.name}
-            />
+            <div className="w-full h-58 flex items-center justify-center mb-4 overflow-hidden">
+              <img
+                src={
+                  product.images && product.images.length > 0
+                    ? `${STORAGE_URL}${product.images[0].image_path}`
+                    : "https://placehold.co/400x300/ffd36c/3d8bff?text=Sem+Imagem"
+                }
+                alt={product.name}
+                className="max-h-full max-w-full object-contain"
+              />
+            </div>
 
-            <h2 className="text-lg font-semibold text-gray-900 mb-2 truncate">
-              {product.name}
-            </h2>
-            <p className="text-sm text-gray-500 mb-4 line-clamp-2 grow">
-              {product.description}
-            </p>
-            <div className="mt-auto">
-              <span className="text-xl font-bold text-blue-600">
-                {new Intl.NumberFormat("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                }).format(product.price / 100)}
-              </span>
-              <p className="text-xs text-gray-400 mt-1">
-                Estoque: {product.stock}
+            <div className="flex flex-col grow">
+              <h2 className="text-lg font-semibold text-gray-900 mb-2 truncate">
+                {product.name}
+              </h2>
+              <p className="text-sm text-gray-500 mb-4 line-clamp-2 grow">
+                {product.description}
               </p>
+              <div className="mt-auto">
+                <span className="text-xl font-bold text-blue-600">
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(product.price / 100)}
+                </span>
+                <p className="text-xs text-gray-400 mt-1">
+                  Estoque: {product.stock}
+                </p>
+              </div>
             </div>
           </Link>
         ))}
