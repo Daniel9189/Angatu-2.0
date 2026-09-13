@@ -1,6 +1,6 @@
 # Angatu - E-commerce
 
-Plataforma de e-commerce full-stack com Laravel 13 (backend) e React (frontend). Suporta produtos com galeria de imagens, pedidos e múltiplos métodos de pagamento (PIX e cartão de crédito).
+Plataforma de e-commerce full-stack com Laravel 13 (backend) e React (frontend).
 
 ## 🛠️ Stack
 
