@@ -17,6 +17,9 @@ return new class extends Migration
 
             $table->integer('total_amount');
             $table->string('payment_method');
+            $table->string('payment_status')->default('pendente');
+            $table->string('transaction_id')->nullable();
+            $table->text('pix_code')->nullable();
             $table->json('shipping_address');
             $table->string('status')->default('pendente');
 
